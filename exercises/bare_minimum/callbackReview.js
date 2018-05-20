@@ -10,29 +10,26 @@ var https = require('https');
 var pluckFirstLineFromFile = function (filePath, callback) {
   // TODO
   fs.readFile(filePath, (err, data)=>{
-    if(err){
+    if (err) {
       callback(err);
     } else {
       var newData = data.toString().split('\n');
       console.log(newData[0]);
       callback(err, newData[0]);
     }
-  })
+  });
 };
 
 // This function should retrieve the status code of a GET request to `url`
 var getStatusCode = function (url, callback) {
   // TODO
-  https.get(url, (res)=>{
-    if(res.statusCode === 200){
+  request(url, function(err, res) {
+    if (err) {
+      callback(err, null);
+    } else {
       callback(null, res.statusCode);
-    } 
-    if (res.statusCode === 404){
-      var err = {message: 'Invalid URI'};
-      callback(err, res.statuCode);
     }
-  });
-   
+  }); 
 };
 
 // Export these functions so we can test them and reuse them in later exercises

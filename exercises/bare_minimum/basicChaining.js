@@ -1,3 +1,5 @@
+// import { write } from 'fs/promises';
+
 /*
  * Write a function WITH NO CALLBACKS that,
  * (1) reads a GitHub username from a `readFilePath`
@@ -10,11 +12,20 @@
 
 var fs = require('fs');
 var Promise = require('bluebird');
+var promConstructor = require('./promiseConstructor');
+var prom = require('./promisification');
 
 
 
 var fetchProfileAndWriteToFile = function(readFilePath, writeFilePath) {
   // TODO
+  return promConstructor.pluckFirstLineFromFileAsync(readFilePath)
+    .then(function(value) {
+      return prom.getGitHubProfileAsync(value)
+        .then(function(profile) {
+          return fs.writeFileAsync(writeFilePath, JSON.stringify(profile));
+        });
+    });
 };
 
 // Export these functions so we can test them
